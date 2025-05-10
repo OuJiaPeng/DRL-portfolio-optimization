@@ -1,4 +1,4 @@
-## 💡 RL-Markowitz Portfolio Optimization
+## 💡 RL and Markowitz Portfolio Optimization
 This project compares Markowitz and Reinforcement Learning based portfolio optimization.
 
 More details can be found in the **"Project_slides.pdf"**
@@ -7,8 +7,8 @@ More details can be found in the **"Project_slides.pdf"**
 
 ## ✨ Features
 - **Classical Markowitz Optimization:** aimed to maximize Sharpe Ratio  
-- **Deep Reinforcement Learning (PPO) Agent:** Dynamic Portfolio Allocation, reward is Sharpe based  
-- **Performance Comparison:** Naive, Markowitz, and RL Portfolios  
+- **Deep Reinforcement Learning (PPO) Agent:** dynamic Portfolio Allocation, reward is Sharpe based  
+- **Performance Comparison:** Markowitz, RL, and a Naive (equal weights) portfolio  
 - **Visualizations:** Portfolio Weights and Wealth Growth  
 
 ---
