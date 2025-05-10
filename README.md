@@ -60,15 +60,15 @@ pip install -r requirements.txt
 ```bash
 # Run the Markowitz optimization (Jupyter Notebook):
 
-    jupyter notebook markowitz/markowitz_portfolio.ipynb
+jupyter notebook markowitz/markowitz_portfolio.ipynb
 
 # Train the RL agent:
 
-    python RL_PPO/RL_portfolio.py
+python RL_PPO/RL_portfolio.py
 
 # Evaluate the RL agent:
 
-    python RL_PPO/evaluate_RL_portfolio.py
+python RL_PPO/evaluate_RL_portfolio.py
 ```
 
 ---
