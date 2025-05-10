@@ -1,0 +1,3 @@
+Annualized Return: 15.00%
+Annualized Volatility: 10.70%
+Sharpe Ratio: 1.40

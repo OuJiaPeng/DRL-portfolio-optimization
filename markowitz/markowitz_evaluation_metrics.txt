@@ -1,0 +1,3 @@
+Annualized Return (2023 Test): 25.37%
+Annualized Volatility (2023 Test): 10.76%
+Sharpe Ratio (2023 Test): 2.36
