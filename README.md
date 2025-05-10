@@ -1,4 +1,4 @@
-💡 RL-Markowitz Portfolio Optimization
+💡 RL-Markowitz Portfolio Optimization  
 This project compares Markowitz and Reinforcement Learning based portfolio optimization.
 
 More details can be found in the "Project_slides.pdf"
