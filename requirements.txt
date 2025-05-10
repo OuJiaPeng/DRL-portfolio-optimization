@@ -1,0 +1,8 @@
+numpy
+pandas
+torch
+gymnasium
+stable_baselines3
+matplotlib
+yfinance
+scipy
