@@ -13,28 +13,28 @@ Visualizations for Portfolio Weights and Wealth Growth
 
 🗂 Project Structure
 
-RL-Markowitz-portfolio-optimization/
-├── RL_PPO/                              # Reinforcement Learning (PPO) Module
-│   ├── RL_portfolio.py                  # Training Script
-│   ├── evaluate_RL_portfolio.py         # Evaluation Script
-│   ├── RL_average_weights_pie.png       # Results (Visualizations)
-│   ├── RL_weights_over_time.png
-│   ├── RL_wealth_growth.png
-│   └── ppo_portfolio_model_sharpe.zip   # Saved Model
+RL-Markowitz-portfolio-optimization/  
+├── RL_PPO/                              # Reinforcement Learning (PPO) Module  
+│   ├── RL_portfolio.py                  # Training Script  
+│   ├── evaluate_RL_portfolio.py         # Evaluation Script  
+│   ├── RL_average_weights_pie.png       # Results (Visualizations)  
+│   ├── RL_weights_over_time.png  
+│   ├── RL_wealth_growth.png  
+│   └── ppo_portfolio_model_sharpe.zip   # Saved Model  
 │
-├── markowitz/                           # Markowitz Optimization Module
-│   ├── markowitz_portfolio.ipynb        # Jupyter Notebook for Markowitz
-│   ├── markowitz_allocations_pie.png    # Results (Visualizations)
-│   ├── markowitz_evaluation_metrics.txt # Metrics (Text Output)
-│   └── markowitz_wealth_growth.png
-│
-├── naive/                               # Naive (Baseline) Portfolio
-│   └── ETFcloseprices.png               # Data/Visualization for Naive Portfolio
-│
-├── README.md                            # Project Overview and Guide
-├── requirements.txt                     # Dependency List
-└── .gitignore                           # Git Ignore File
-
+├── markowitz/                           # Markowitz Optimization Module  
+│   ├── markowitz_portfolio.ipynb        # Jupyter Notebook for Markowitz  
+│   ├── markowitz_allocations_pie.png    # Results (Visualizations)  
+│   ├── markowitz_evaluation_metrics.txt # Metrics (Text Output)  
+│   └── markowitz_wealth_growth.png  
+│  
+├── naive/                               # Naive (Baseline) Portfolio  
+│   └── ETFcloseprices.png               # Data/Visualization for Naive Portfolio  
+│  
+├── README.md                            # Project Overview and Guide  
+├── requirements.txt                     # Dependency List  
+└── .gitignore                           # Git Ignore File  
+  
 🛠️ Setup
 
 Clone this repository:
