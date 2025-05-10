@@ -1,11 +1,13 @@
 💡 RL-Markowitz Portfolio Optimization
-This project compares two distinct portfolio optimization approaches: Markowitz Portfolio Optimization and Reinforcement Learning (RL) Portfolio Optimization using PPO.
+This project compares Markowitz and Reinforcement Learning based portfolio optimization.
+
+More details can be found in the "Project_slides.pdf"
 
 ✨ Features
 
-Classical Markowitz Optimization with Efficient Frontier and Sharpe Ratio Maximization
+Classical Markowitz Optimization; aimed to maximize Sharpe Ratio
 
-Deep Reinforcement Learning (PPO) Agent for Dynamic Portfolio Allocation
+Deep Reinforcement Learning (PPO) Agent for Dynamic Portfolio Allocation, reward is Sharpe based
 
 Performance Comparison between Naive, Markowitz, and RL Portfolios
 
@@ -17,19 +19,21 @@ RL-Markowitz-portfolio-optimization/
 ├── RL_PPO/                              # Reinforcement Learning (PPO) Module  
 │   ├── RL_portfolio.py                  # Training Script  
 │   ├── evaluate_RL_portfolio.py         # Evaluation Script  
-│   ├── RL_average_weights_pie.png       # Results (Visualizations)  
+│   ├── RL_average_weights_pie.png       # Results (Visuals & Metrics)  
 │   ├── RL_weights_over_time.png  
 │   ├── RL_wealth_growth.png  
+│   ├── RL_evaluation_summary.txt  
 │   └── ppo_portfolio_model_sharpe.zip   # Saved Model  
 │
 ├── markowitz/                           # Markowitz Optimization Module  
 │   ├── markowitz_portfolio.ipynb        # Jupyter Notebook for Markowitz  
-│   ├── markowitz_allocations_pie.png    # Results (Visualizations)  
-│   ├── markowitz_evaluation_metrics.txt # Metrics (Text Output)  
-│   └── markowitz_wealth_growth.png  
+│   ├── markowitz_allocations_pie.png    # Results (Visuals & Metrics)  
+│   ├── markowitz_wealth_growth.png  
+│   └── markowitz_evaluation_metrics.txt 
 │  
 ├── naive/                               # Naive (Baseline) Portfolio  
-│   └── ETFcloseprices.png               # Data/Visualization for Naive Portfolio  
+│   ├── naive_portfolio_plot.png         # Results (Visuals & Metrics)  
+│   └── naive_metrics.txt         
 │  
 ├── README.md                            # Project Overview and Guide  
 ├── requirements.txt                     # Dependency List  
@@ -39,14 +43,14 @@ RL-Markowitz-portfolio-optimization/
 
 Clone this repository:
 
-git clone https://github.com/OuJiaPeng/RL-Markowitz-portfolio-optimization.git
+git clone https://github.com/OuJiaPeng/RL-Markowitz-portfolio-optimization.git  
 cd RL-Markowitz-portfolio-optimization
 
 Install the required packages:
 
 pip install -r requirements.txt
 
-🚀 Usage
+🚀 How to use
 
 Run the Markowitz optimization (Jupyter Notebook):
 
