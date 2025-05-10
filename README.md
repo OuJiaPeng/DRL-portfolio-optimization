@@ -51,20 +51,27 @@ cd RL-Markowitz-portfolio-optimization
 Install the required packages:
 ```bash
 pip install -r requirements.txt
+```
 
-# ##🚀 How to use
+---
 
-Run the Markowitz optimization (Jupyter Notebook):
+## 🚀 How to use
+
+```bash
+# Run the Markowitz optimization (Jupyter Notebook):
 
     jupyter notebook markowitz/markowitz_portfolio.ipynb
 
-Train the RL agent:
+# Train the RL agent:
 
     python RL_PPO/RL_portfolio.py
 
-Evaluate the RL agent:
+# Evaluate the RL agent:
 
     python RL_PPO/evaluate_RL_portfolio.py
+```
+
+---
 
 📊 Results
 
