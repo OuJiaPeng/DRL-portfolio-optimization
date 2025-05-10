@@ -73,17 +73,21 @@ python RL_PPO/evaluate_RL_portfolio.py
 
 ---
 
-📊 Results
+## 📊 Results
 
 Comparative analysis of Naive, Markowitz, and RL portfolios.
 
 Key metrics: Return, Volatility, Sharpe Ratio.
 
-📝 Future Improvements
+---
+
+## 📝 Future Improvements
 
 Add transaction costs and turnover penalties
 
 Optimize PPO hyperparameters
 
 Explore advanced models (LSTM, Transformer) for RL.
+
+---
 
