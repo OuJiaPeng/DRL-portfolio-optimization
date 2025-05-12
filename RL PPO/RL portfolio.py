@@ -1,6 +1,4 @@
-# =============================
-# RL Portfolio Project (Sharpe-Oriented with Early Stopping)
-# =============================
+# RL with PPO (Sharpe oriented with early stopping)
 
 import os
 
@@ -18,7 +16,7 @@ from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.callbacks import ProgressBarCallback, BaseCallback
 
 
-# ========== Custom PPO Policy ==========
+# Custom PPO class policy
 
 class CustomMLPPolicy(ActorCriticPolicy):
     def __init__(self, *args, **kwargs):
@@ -27,7 +25,7 @@ class CustomMLPPolicy(ActorCriticPolicy):
                          activation_fn=nn.ReLU)
 
 
-# ========== Custom Environment ==========
+# Custom environment
 
 class PortfolioEnv(gym.Env):
     def __init__(self, returns, window_size=30, risk_aversion_coef=1.0):
@@ -77,7 +75,7 @@ class PortfolioEnv(gym.Env):
         }
 
 
-# ========== Sharpe Early Stopping  ==========
+# Early stopping callback for Sharpe ratio
 
 class SharpeEarlyStoppingCallback(BaseCallback):
     def __init__(self, val_env, patience=3, eval_freq=20000, verbose=1):
@@ -124,7 +122,7 @@ class SharpeEarlyStoppingCallback(BaseCallback):
         return True
 
 
-# ========== Main Execution ==========
+# Main execution
 
 if __name__ == '__main__':
     import multiprocessing
@@ -133,14 +131,14 @@ if __name__ == '__main__':
 
     multiprocessing.freeze_support()
 
-    # === [1] Download Data Once ===
+    # Data
 
     print("Downloading data...")
     etfs = ['SPY', 'QQQ', 'IWM', 'EFA', 'EEM', 'VNQ', 'TLT', 'IEF', 'GLD', 'USO']
     prices = yf.download(etfs, start="2018-01-01", end="2024-01-01", group_by='ticker', auto_adjust=True, progress=False)
     adj_close_prices = prices.xs('Close', level=1, axis=1).dropna()
 
-    # === [2] Split Data ===
+    # Data partitioning
 
     train_prices = adj_close_prices.loc[:'2021-12-31']
     val_prices = adj_close_prices.loc['2022-01-01':'2022-12-31']
@@ -154,7 +152,7 @@ if __name__ == '__main__':
     print("Validation Period:", val_returns.index.min(), "to", val_returns.index.max())
     print("Testing Period:", test_returns.index.min(), "to", test_returns.index.max())
 
-    # === [3] Setup VecEnv and Validation Env ===
+    # VecEnv and Validation Env
 
     def make_env():
         return lambda: PortfolioEnv(train_returns, window_size=30, risk_aversion_coef=1.0)
@@ -163,7 +161,7 @@ if __name__ == '__main__':
     train_env = SubprocVecEnv([make_env() for _ in range(n_envs)])
     val_env = PortfolioEnv(val_returns, window_size=30, risk_aversion_coef=1.0)
 
-    # === [4] Train PPO with Early Stopping and ProgressBar ===
+    # PPO training w/ early stopping
     
     model = PPO(
         CustomMLPPolicy,

@@ -1,6 +1,4 @@
-# =============================
-# RL Portfolio Evaluation Script (Sharpe-Optimized)
-# =============================
+# RL model evaluation script
  
 import os
 
@@ -14,7 +12,7 @@ import torch
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv
 
-# ========== 1. Load Test Data ==========
+# Load data
 
 etfs = ['SPY', 'QQQ', 'IWM', 'EFA', 'EEM', 'VNQ', 'TLT', 'IEF', 'GLD', 'USO']
 print("Loading test data...")
@@ -23,7 +21,7 @@ adj_close_prices = prices.xs('Close', level=1, axis=1).dropna()
 test_prices = adj_close_prices.loc['2023-01-01':]
 test_returns = test_prices.pct_change().dropna()
 
-# ========== 2. Define Matching Environment ==========
+# Matching environments as model
 
 class PortfolioEnv(gym.Env):
     def __init__(self, returns, window_size=30, risk_aversion_coef=1.0):
@@ -74,12 +72,12 @@ class PortfolioEnv(gym.Env):
             "raw_return": portfolio_return
         }
 
-# ========== 3. Load Model ==========
+# Load model
 
 model_path = os.path.join(os.path.dirname(__file__), "ppo_portfolio_model_sharpe")
 model = PPO.load(model_path)
 
-# ========== 4. Evaluation Loop ==========
+# Evaluation loop
 
 n_runs = 10
 sharpe_list = []
@@ -110,7 +108,7 @@ for run in range(n_runs):
     return_list.append(mean_ret)
     volatility_list.append(std_ret)
 
-# ========== 5. Save Metrics ==========
+# Save metrics
 
 avg_return = np.mean(return_list)
 std_return = np.std(return_list)
@@ -129,7 +127,7 @@ with open(os.path.join(os.path.dirname(__file__), "RL_evaluation_summary.txt"), 
 print("Evaluation complete — summary saved to RL_evaluation_summary.txt")
 
 
-# ========== 6. Single Final Run for Plots ==========
+# Single run just for plots
 
 test_env = DummyVecEnv([lambda: PortfolioEnv(test_returns, window_size=30)])
 obs = test_env.reset()
@@ -147,7 +145,7 @@ while True:
     if done:
         break
 
-# ========== Plot 1: Wealth Growth ==========
+# Wealth growth plot
 
 plt.figure(figsize=(12, 6))
 plt.plot(wealth)
@@ -158,7 +156,7 @@ plt.grid()
 plt.savefig(os.path.join(os.path.dirname(__file__), 'RL_wealth_growth.png'))
 plt.close()
 
-# ========== Plot 2: Portfolio Weights Over Time ==========
+# Weights over time plot
 
 actions_df = pd.DataFrame(actions_taken, columns=etfs)
 plt.figure(figsize=(14, 6))
@@ -172,7 +170,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(os.path.dirname(__file__),'RL_weights_over_time.png'))
 plt.close()
 
-# ========== Plot 3: Average Weights Pie Chart ==========
+# Average weights pie chart
 
 avg_weights = actions_df.mean()
 plt.figure(figsize=(6, 6))
