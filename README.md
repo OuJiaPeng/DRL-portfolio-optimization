@@ -1,7 +1,10 @@
+## RL can achieve SR > 2.0, experimenting with different policies to try and surpass
+
 ## RL and Markowitz Portfolio Optimization
 This project compares Markowitz and DRL (Deep Reinforcement Learning) based portfolio optimization.
 
 More details can be found in the **"NEW_project_slides.pdf"**
+
 (More formal but outdated in **"OLD_project_slides.pdf"**)
 
 ---
@@ -19,4 +22,5 @@ More details can be found in the **"NEW_project_slides.pdf"**
 Daily random rebalance; 1,000,000 Simulation Runs
 
 Top 0.01%: >2.05 SR (RL here)
+
 Top 0.1%: >1.84 SR (Markowitz here)
