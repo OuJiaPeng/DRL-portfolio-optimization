@@ -1,0 +1,20 @@
+# Ignore everything at repo root except listed folders and this file
+/*
+!.gitignore
+!/analysis/
+!/analysis/**
+!/data/
+!/data/**
+!/markowitz/
+!/markowitz/**
+!/naive/
+!/naive/**
+
+# Ignore CSV files everywhere (including inside the included folders)
+*.csv
+
+# Ignore Python cache and system files
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

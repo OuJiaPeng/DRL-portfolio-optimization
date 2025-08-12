@@ -1,0 +1,11 @@
+Naive Equal Weight Portfolio Metrics (Test Period: 2025-01-02 to 2025-07-01)
+============================================================
+Annualized Return: 12.67%
+Annualized Volatility: 15.44%
+Sharpe Ratio: 0.82
+
+Portfolio Configuration:
+Strategy: Equal Weight (10% per ETF)
+Number of ETFs: 10
+Test Period: 2025-01-02 to 2025-07-01
+ETFs: SPY, QQQ, IWM, EFA, EEM, VNQ, TLT, IEF, GLD, USO
