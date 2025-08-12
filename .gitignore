@@ -10,6 +10,12 @@
 !/naive/
 !/naive/**
 
+!/OLD_project_slides.pdf
+!/NEW_project_slides.pdf
+!/README.md
+!/requirements.txt
+
+
 # Ignore CSV files everywhere (including inside the included folders)
 *.csv
 
