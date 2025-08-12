@@ -25,16 +25,7 @@ def create_features(
     fit_end_date: Optional[Union[str, pd.Timestamp]] = None,
     raw_df: Optional[pd.DataFrame] = None,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Create per-asset normalized log-return features with a short history stack.
 
-    Steps:
-    - log returns r_t = log(P_t / P_{t-1}) per asset
-    - rolling z-score normalization over `norm_window`
-    - frame-stack last `stack_len` days [t, t-1, ..., t-(stack_len-1)] per asset
-
-    Returns (features_df, prices_aligned_df) aligned on the same dates.
-    """
     # Defaults from Config if not provided
     stack_len = stack_len if stack_len is not None else getattr(Config, "STACK_LEN", 10)
     norm_window = norm_window if norm_window is not None else getattr(Config, "NORM_WINDOW", 63)

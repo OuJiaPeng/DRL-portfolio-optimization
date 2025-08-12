@@ -1,11 +1,11 @@
 import os
-#!/usr/bin/env python3
+import pandas as pd
+
 """
 Mini Data Loader for ETF Prices
 Creates and returns simple ETF price data (similar to etf_prices.csv)
 """
 
-import pandas as pd
 def create_etf_prices():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     etf_prices_path = os.path.join(script_dir, 'etf_prices.csv')
@@ -31,9 +31,7 @@ def create_etf_prices():
         return prices_df
     print("No data files found. Please run the full data loader first.")
     return None
-    
-    print("❌ No data files found. Please run the full data loader first.")
-    return None
+
 
 def get_etf_returns(prices_df=None):
     if prices_df is None:
