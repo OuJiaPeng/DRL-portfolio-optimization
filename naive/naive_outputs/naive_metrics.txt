@@ -1,8 +1,10 @@
 Naive Equal Weight Portfolio Metrics (Test Period: 2025-01-02 to 2025-07-01)
 ============================================================
-Annualized Return: 12.67%
+Annualized Excess Return: 12.67%
 Annualized Volatility: 15.44%
 Sharpe Ratio: 0.82
+CAGR: 16.48%
+Max Drawdown: -12.05%
 
 Portfolio Configuration:
 Strategy: Equal Weight (10% per ETF)

@@ -29,7 +29,7 @@ def create_etf_prices():
         prices_df.to_csv(etf_prices_path)
         print(f"Saved to: {etf_prices_path}")
         return prices_df
-    print("No data files found. Please run the full data loader first.")
+    print("No data found. Run the full data loader first.")
     return None
 
 

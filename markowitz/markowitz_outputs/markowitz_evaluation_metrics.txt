@@ -1,10 +1,12 @@
 Rolling Markowitz Portfolio Metrics
 ==================================================
 Test Period: 2025-01-02 to 2025-07-01
-Lookback: 12 months
+Lookback: 6 months
 Rebalancing: Daily
 Risk-free rate: 4.0% annually
 
-Annualized Excess Return: 31.97%
-Annualized Volatility: 17.47%
-Sharpe Ratio: 1.83
+Annualized Excess Return: 31.68%
+Annualized Volatility: 18.06%
+Sharpe Ratio: 1.75
+CAGR: 40.56%
+Max Drawdown: -5.80%

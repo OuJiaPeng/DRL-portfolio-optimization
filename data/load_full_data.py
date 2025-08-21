@@ -6,7 +6,15 @@ from time import sleep
 import numpy as np
 from polygon.rest import RESTClient
 
+from dotenv import load_dotenv
+load_dotenv()
+    
+api_key = os.getenv("POLYGONIO_API_KEY")
+assert api_key, "Please set POLYGONIO_API_KEY in your environment"
+
 # Helper functions for fetching technical indicators from Polygon.io
+# I use polygon, use whatever you like
+
 def fetch_rsi_data(client, symbol, start_date=None, window=14):
     try:
         if start_date:
@@ -111,13 +119,11 @@ def fetch_and_prepare_data(
     out_path: str = None,
     rate_limit: float = 1.0
 ):
-    """
-    Download daily price data (OHLCV) and technical indicators from Polygon.io API using the official SDK,
-    and save to a single CSV file. The output CSV will have a multi-level index for columns: (symbol, feature).
+
+    # Download daily price data (OHLCV) and technical indicators from Polygon.io API using the official SDK, and save to a single CSV file. The output CSV will have a multi-level index for columns: (symbol, feature).
     
-    Note: For technical indicators, we fetch extra data from before start_date to ensure indicators
-    are properly calculated from the target start date onward.
-    """
+    # For technical indicators, we fetch extra data from before start_date to ensure indicators are properly calculated from the target start date onward.
+
     if out_path is None:
         script_dir = os.path.dirname(os.path.abspath(__file__))
         out_path = os.path.join(script_dir, 'etf_data_with_indicators.csv')
@@ -252,9 +258,8 @@ def fetch_and_prepare_data(
     return all_indicators_df
 
 def load_and_preprocess_data(data_path, etfs=None, features_to_keep=None):
+    
     """
-    Loads and preprocesses the ETF data from a CSV file.
-
     Args:
         data_path (str): The path to the CSV file.
         etfs (list, optional): A list of ETF tickers to load. 
@@ -266,8 +271,6 @@ def load_and_preprocess_data(data_path, etfs=None, features_to_keep=None):
         np.ndarray: The preprocessed data as a numpy array of shape 
                     (timesteps, n_assets, n_features).
     """
-    import numpy as np
-    import pandas as pd
 
     if features_to_keep is None:
         features_to_keep = ["open", "high", "low", "close", "volume", "rsi_14", "macd", "signal", "macd_diff"]
@@ -275,7 +278,7 @@ def load_and_preprocess_data(data_path, etfs=None, features_to_keep=None):
     # Load the data with a multi-level header
     df = pd.read_csv(data_path, header=[0, 1], index_col=0, parse_dates=True)
     
-    # If etfs are not specified, get them from the columns
+    # If ETFs are not specified, get them from the columns
     if etfs is None:
         etfs = df.columns.get_level_values(0).unique().tolist()
 
@@ -316,9 +319,8 @@ def load_and_preprocess_data(data_path, etfs=None, features_to_keep=None):
     return np.array([])
 
 def validate_data_quality(df, symbols):
-    """
-    Validate the quality of the fetched data and provide a summary.
-    
+
+    """    
     Args:
         df (pd.DataFrame): The combined dataframe with multi-level columns
         symbols (list): List of symbols that were requested
@@ -368,11 +370,6 @@ def validate_data_quality(df, symbols):
     return summary
 
 if __name__ == '__main__':
-    from dotenv import load_dotenv
-    load_dotenv()
-    
-    api_key = os.getenv("POLYGONIO_API_KEY")
-    assert api_key, "Please set POLYGONIO_API_KEY in your environment"
     
     # Full ETF universe for portfolio optimization
     etfs = ['SPY', 'QQQ', 'IWM', 'EFA', 'EEM', 'VNQ', 'TLT', 'IEF', 'GLD', 'USO']
@@ -417,8 +414,8 @@ if __name__ == '__main__':
             data_path = os.path.join(script_dir, 'etf_data_with_indicators.csv')
             features = load_and_preprocess_data(data_path, etfs)
             print(f"Preprocessed features shape: {features.shape}")
-            print("✅ Data preprocessing successful!")
+            print("Data preprocessing successful!")
         except Exception as e:
-            print(f"❌ Data preprocessing failed: {e}")
+            print(f"Data preprocessing failed: {e}")
     else:
-        print("No data was fetched. Check your API key and internet connection.")
+        print("No data was fetched.")

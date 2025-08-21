@@ -1,14 +1,22 @@
 # Ignore everything at repo root except listed folders and this file
 /*
 !.gitignore
+
 !/analysis/
 !/analysis/**
+
 !/data/
 !/data/**
+
 !/markowitz/
 !/markowitz/**
+
 !/naive/
 !/naive/**
+
+!/rl_ppo/
+!/rl_ppo/**
+
 
 !/OLD_project_slides.pdf
 !/NEW_project_slides.pdf
