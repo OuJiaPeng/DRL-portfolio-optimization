@@ -32,7 +32,7 @@ Core risk/return comparison:
 
 
 ### Key Takeaways
-1. **Risk Efficiency:** RL achieves similar annualized return to Markowitz with (32%) lower volatility, lifting Sharpe from 1.75 → 2.00.
-2. **Drawdown Control:** Both optimized approaches materially reduce max drawdown vs naive; RL maintains competitive drawdown despite selective concentration.
-3. **Adaptive Concentration:** RL can concentrate when signal quality is high, otherwise diversifies. This is unlike equal-weight or optimization-based Markowitz which can overfit means/covariances.
-4. **Capital Efficiency:** RL's High Calmar (5.06) indicates strong return per unit downside risk.
+1. **Risk Efficiency:** RL attains 22.3\% lower excess return but also 31.8\% lower vol vs Markowitz, lifting Sharpe from 1.75 → 2.00.
+2. **Adaptive Concentration:** RL can concentrate when signal quality is high, otherwise diversifies. This is unlike equal-weight or optimization-based Markowitz which can overfit means/covariances.
+3. **Monte Carlo tail positioning (1,000,000 sims):** Markowitz Sharpe 1.75 ≈ top 0.3%; RL Sharpe 2.00 ≈ top 0.01% of simulated random-allocation paths.  
+
