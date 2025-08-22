@@ -106,9 +106,10 @@ class Config:
     LOGIT_CLIP_ANNEAL_STEPS: int = 60_000
     LOGIT_CLIP: float = 4.0
     LOGIT_L2_PENALTY: float = 0.0
-    DEBUG_LOG_ACTIONS: bool = True
-    DEBUG_LOG_LIMIT: int = 3000
-    DEBUG_LOG_PATH: Path = BASE_DIR / "results" / "action_debug.csv"
+    # Debug action logging (disabled for final release)
+    DEBUG_LOG_ACTIONS: bool = False
+    DEBUG_LOG_LIMIT: int = 0
+    DEBUG_LOG_PATH: Path = BASE_DIR / "results" / "action_debug.csv"  # retained for optional future re-enable
 
     # Diagnostic destabilizers to break uniform weight attractor
     INCLUDE_PREV_WEIGHTS: bool = True

@@ -5,26 +5,44 @@ from rl_ppo.config import Config
 
 
 def load_and_process_data() -> pd.DataFrame:
-    """Load multi-index CSV (ticker, field) -> close prices DataFrame."""
-def load_and_process_data() -> pd.DataFrame:
-    """Load CSV with multi-index columns (ticker, field) and extract Close prices.
+    """Load ETF price panel using the OPEN field (intentionally, for reproducibility).
 
-    Expected format: first level = ticker, second level includes 'Close'.
-    Falls back to single-level columns if already flat.
+    Rationale: Historical runs that produced the published Sharpe used the first
+    column selected via a fallback path, which corresponded to the 'open' price.
+    To lock in those results we now explicitly and transparently select the
+    'open' field case‑insensitively for each ticker in the multi‑index CSV.
+
+    If a ticker lacks an 'open' field we raise a clear error instead of silently
+    substituting something else. If the file is ever flattened to single level
+    we accept any direct column matching the ticker (assumed already open).
     """
     df = pd.read_csv(Config.ETF_DATA_PATH, header=[0, 1], index_col=0, parse_dates=True)
     df = df.sort_index()
-    closes = {}
+    if not isinstance(df.columns, pd.MultiIndex):  # unexpected, but handle
+        subset = {sym: df[sym] for sym in Config.ETF_TICKERS if sym in df.columns}
+        if len(subset) != len(Config.ETF_TICKERS):
+            missing = [s for s in Config.ETF_TICKERS if s not in subset]
+            raise KeyError(f"Missing expected tickers in flat file: {missing}")
+        prices = pd.DataFrame(subset).sort_index().ffill().dropna(how='all')
+        return prices
+    lvl0 = df.columns.get_level_values(0)
+    lvl1 = df.columns.get_level_values(1)
+    open_prices: dict[str, pd.Series] = {}
     for sym in Config.ETF_TICKERS:
-        try:
-            closes[sym] = df[(sym, 'Close')]
-        except KeyError:
-            # Try single-level fallback
-            if sym in df.columns.get_level_values(0):
-                closes[sym] = df[sym].iloc[:, 0] if isinstance(df[sym], pd.DataFrame) else df[sym]
-            else:
-                raise
-    prices = pd.DataFrame(closes).sort_index().ffill().dropna(how='all')
+        # Collect fields for this ticker
+        fields = [f for t, f in zip(lvl0, lvl1) if t == sym]
+        if not fields:
+            raise KeyError(f"Ticker {sym} not found in data columns")
+        # Case-insensitive match to 'open'
+        match = None
+        for f in fields:
+            if f.lower() == 'open':
+                match = f
+                break
+        if match is None:
+            raise KeyError(f"Ticker {sym} has no 'open' field (available: {fields})")
+        open_prices[sym] = df[(sym, match)]
+    prices = pd.DataFrame(open_prices).sort_index().ffill().dropna(how='all')
     return prices
 
 

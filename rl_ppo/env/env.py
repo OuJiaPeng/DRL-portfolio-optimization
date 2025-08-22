@@ -1,4 +1,4 @@
-import os, csv
+import os
 from typing import Any, Dict
 
 import gymnasium as gym
@@ -28,10 +28,10 @@ class PortfolioEnv(gym.Env):
         assert features.ndim == 2 and prices.ndim == 2, "Features and prices must be 2D"
         assert features.shape[0] == prices.shape[0], "Features/prices time dimension mismatch"
         self.features = features.astype(np.float32)
-        
+
         # Store config overrides for refit-specific parameters
         self.config_overrides = config_overrides or {}
-        
+
         self.prices = prices.astype(np.float32)
         self.n_assets = self.prices.shape[1]
         assert self.n_assets == len(Config.ETF_TICKERS), "Price columns != ETF_TICKERS length"
@@ -44,20 +44,14 @@ class PortfolioEnv(gym.Env):
         self._rng = np.random.default_rng(int(getattr(Config, 'SEED', 0)))
         self.t = 0
         self.w_prev = np.ones(self.n_assets, dtype=np.float32) / self.n_assets
-        self._rew_hist = []
-        self._asset_bias = None
+        self._rew_hist: list[float] = []
+        self._asset_bias: np.ndarray | None = None
 
-        # Debug logging
-        self.debug = bool(getattr(Config, 'DEBUG_LOG_ACTIONS', False))
-        self.debug_limit = int(getattr(Config, 'DEBUG_LOG_LIMIT', 0) or 0)
-        self.debug_path = str(getattr(Config, 'DEBUG_LOG_PATH', './results/action_debug.csv'))
+        # Debug attributes (inactive)
+        self.debug = False
+        self.debug_limit = 0
+        self.debug_path = ''
         self._debug_rows = 0
-        if self.debug:
-            os.makedirs(os.path.dirname(self.debug_path), exist_ok=True)
-            if not os.path.exists(self.debug_path):
-                with open(self.debug_path, 'w', newline='', encoding='utf-8') as f:
-                    writer = csv.writer(f)
-                    writer.writerow(['t','port_ret','reward','turnover_cost','turnover','hhi','enh', *[f'w_{t}' for t in Config.ETF_TICKERS]])
 
     def _get_config_value(self, attr_name: str, default=None):
         """Get config value with override support for refit parameters."""
@@ -216,14 +210,7 @@ class PortfolioEnv(gym.Env):
             'asset_bias': None if self._asset_bias is None else self._asset_bias.copy(),
         }
 
-        if self.debug and (self._debug_rows < self.debug_limit or self.debug_limit <= 0):
-            try:
-                with open(self.debug_path, 'a', newline='', encoding='utf-8') as f:
-                    writer = csv.writer(f)
-                    writer.writerow([self.t, port_ret, reward, turnover_cost, turnover_realized, hhi, enh, *w_eff.tolist()])
-                self._debug_rows += 1
-            except Exception:
-                pass
+    # (Debug CSV logging removed for final release)
 
         return obs, float(reward), bool(terminated), bool(truncated), info
 

@@ -244,12 +244,13 @@ def main():
     
     for month_start in test_months:
         month_end = month_start + pd.offsets.MonthEnd(0)
-        
+
         # Skip July (insufficient data as noted in refit script)
         if month_start >= pd.Timestamp('2025-07-01'):
             break
-            
-        print(f"\\nMonth {month_start.strftime('%Y-%m')}: Retrain up to {(month_start - pd.Timedelta(days=1)).strftime('%Y-%m-%d')}, evaluate {month_start.strftime('%Y-%m-%d')}..{month_end.strftime('%Y-%m-%d')}")
+
+        # Blank line before each month header
+        print(f"\nMonth {month_start.strftime('%Y-%m')}: Retrain up to {(month_start - pd.Timedelta(days=1)).strftime('%Y-%m-%d')}, evaluate {month_start.strftime('%Y-%m-%d')}..{month_end.strftime('%Y-%m-%d')}")
         
         # Match train_simple_refit.py exactly: use features with fit_end_date and 90-day lookback
         train_end = month_start - pd.Timedelta(days=1)
@@ -321,7 +322,7 @@ def main():
     # Calculate overall metrics
     overall_metrics = calculate_metrics(all_returns, all_weights, all_dates)
     
-    print(f"\\n=== OVERALL REFIT EVALUATION RESULTS ===")
+    print("\n=== OVERALL REFIT EVALUATION RESULTS ===")
     print(f"Sharpe Ratio:         {overall_metrics['sharpe_ratio']:.6f}")
     print(f"Cumulative Return:    {overall_metrics['cumulative_return']:.2%}")
     print(f"Annualized Return:    {overall_metrics['annualized_return']:.2%}")
@@ -336,7 +337,7 @@ def main():
     
     # Manual verification of Sharpe calculation (now matches Markowitz/Naive method)
     manual_sharpe = overall_metrics['annualized_excess_return'] / overall_metrics['annualized_volatility']
-    print(f"\\nSharpe Check: {overall_metrics['annualized_excess_return']:.3f} / {overall_metrics['annualized_volatility']:.3f} = {manual_sharpe:.3f}")
+    print(f"\nSharpe Check: {overall_metrics['annualized_excess_return']:.3f} / {overall_metrics['annualized_volatility']:.3f} = {manual_sharpe:.3f}")
     
     # Create visualizations and save results
     create_visualizations(all_returns, all_weights, all_dates, overall_metrics)
