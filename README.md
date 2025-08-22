@@ -1,5 +1,3 @@
-## RL can achieve SR > 2.0, experimenting with different policies to try and surpass
-
 ## RL and Markowitz Portfolio Optimization
 This project compares Markowitz and DRL (Deep Reinforcement Learning) based portfolio optimization.
 
@@ -10,7 +8,7 @@ More details can be found in the **"NEW_project_slides.pdf"**
 ---
 
 ## Data & Test Window
-Test window: 2025-01-02 to 2025-07-01 (≈ 0.5 years of out-of-sample trading days).  
+Test window: 2025-01-02 to 2025-07-01 (6 months of out-of-sample trading days).  
 Universe (10 liquid ETFs spanning equities, intl, small-cap, EM, bonds, real assets & commodities): `SPY, QQQ, IWM, EFA, EEM, VNQ, TLT, IEF, GLD, USO`.
 
 ## Method Summary
@@ -18,9 +16,9 @@ Universe (10 liquid ETFs spanning equities, intl, small-cap, EM, bonds, real ass
 |----------|------------------|-----------|------------------|-----------|
 | Naive Equal Weight | Static 10% per ETF | None after start | N/A | Baseline diversification |
 | Rolling Markowitz | Mean-Variance (expected excess return vs variance) using rolling window | Daily | 6-month rolling window | Max Sharpe (risk-free 4% annual) |
-| RL (PPO) | Policy learns allocation weights on a simplex; state includes recent prices, returns & indicators | Daily (policy action); policy retrained monthly | Monthly refit on expanding data | Maximize risk-adjusted growth (implicit via reward = portfolio return - risk penalty) |
+| RL (PPO) | Policy learns allocation weights on a simplex; state includes recent prices, returns & indicators | Daily (policy action); policy retrained monthly | Monthly refit on expanding data | Maximize risk-adjusted growth  |
 
-## Results (Out-of-Sample 2025-01-02 → 2025-07-01)
+## Results (Out-of-Sample 2025-01-01 → 2025-07-01)
 
 Core risk/return comparison:
 
