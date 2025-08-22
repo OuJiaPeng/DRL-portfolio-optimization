@@ -49,21 +49,29 @@ Additional RL concentration / efficiency metrics:
 5. Capital Efficiency: High Calmar (5.06) indicates strong return per unit downside risk, supportive for leveraged overlays (if desired) while keeping absolute drawdowns modest.
 
 ## Monte Carlo (MC) Benchmark
-Purpose: Provide a distributional baseline of achievable Sharpe ratios under daily random rebalancing (uniform weights on the 10-asset simplex) to contextualize systematic strategies.
+Purpose: Provide a distributional baseline of achievable risk-adjusted performance under uninformed daily random rebalancing (uniform draw on the 10-asset simplex each day) to contextualize systematic strategies.
 
-Setup:
-- 1,000,000 simulated random weight paths
-- Daily re-sampled portfolio weights (no transaction costs assumed)
-- Same asset return stream & test window as above
+Latest run (updated): 1,000,000 simulated random portfolios (daily re-sampled weights), same test window.
 
-Percentile positioning:
-| Percentile Threshold | Sharpe Cutoff | Strategy Placement |
-|----------------------|--------------:|-------------------|
-| Top 0.01% | > 2.00 | RL sits here |
-| Top 0.1% | > 1.84 | Markowitz sits here |
-| Median (not shown) | (<< 1.0) | Random baseline much lower |
+Tier summaries (means within top X% of Sharpe-ranked simulations):
 
-Interpretation: Achieving Sharpe ≥ 2.0 places the RL policy in the extreme right tail of the unconditional random allocation distribution, suggesting genuine signal extraction / dynamic risk management rather than luck.
+| Tier | Count | Mean Sharpe | Mean CAGR | Mean Vol | Mean MDD | Mean Final Wealth |
+|------|------:|------------:|----------:|---------:|---------:|------------------:|
+| Top 0.01% | 100 | 2.032 | 0.403 | 0.153 | -0.094 | 1.1780 |
+| Top 0.1%  | 1,000 | 1.833 | 0.365 | 0.154 | -0.098 | 1.1625 |
+| Top 1%    | 10,000 | 1.610 | 0.321 | 0.156 | -0.103 | 1.1444 |
+| Top 50%   | 500,000 | 1.030 | 0.210 | 0.158 | -0.116 | 1.0967 |
+
+Extremes across all 1,000,000 sims: Max Sharpe observed 2.465; Max CAGR 0.488.
+
+Placement of strategies:
+- RL PPO Sharpe 2.00 ≈ between the mean of the top 0.01% (2.03) and its lower tail; lies well inside the extreme right tail.
+- Markowitz Sharpe 1.75 ≈ between mean of top 0.1% (1.83) and mean of top 1% (1.61); sits in roughly the top ~0.2–0.3% by interpolation.
+- Equal-weight Sharpe 0.82 < mean of top 50% (1.03); near or below overall distribution midpoint.
+
+Interpretation: Achieving Sharpe ≈2.0 under this regime-free random baseline is statistically rare (≈ top 0.01–0.02% region), strengthening the evidence that RL performance is not a random allocation artifact. Markowitz also occupies a high, but less extreme, tail percentile.
+
+Stability note: 0.01% tier (n=100) now has sufficient sample size for a rough mean (relative SE ~10%); deeper tail claims (e.g., exact percentile of a single Sharpe) would need either more simulations or extreme value modeling.
 
 ## Metric Definitions (Concise)
 | Metric | Definition (Simplified) |
