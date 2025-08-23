@@ -17,6 +17,8 @@
 !/rl_ppo/
 !/rl_ppo/**
 
+!/models/
+!/models/**
 
 !/OUTDATED_project_slides.pdf
 !/UPDATED_project_slides.pdf
