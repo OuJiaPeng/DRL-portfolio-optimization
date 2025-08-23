@@ -1,15 +1,17 @@
 import os
+import sys
+import warnings
+import random
+import time
+from pathlib import Path
+import numpy as np
+import pandas as pd
+import torch
+
 # Force-set TF env vars BEFORE any TF-related imports (even indirect)
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"  # disable oneDNN ops
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"   # 3 = ERROR only
 os.environ.setdefault("KMP_WARNINGS", "0")
-import sys
-import warnings
-import random
-import numpy as np
-import pandas as pd
-import torch
-import time
 
 # Optionally silence the Gym→Gymnasium compatibility warning from SB3
 warnings.filterwarnings(
@@ -29,20 +31,6 @@ from stable_baselines3.common.logger import configure as sb3_configure_logger
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
-import os, sys, warnings, random, time
-from pathlib import Path
-import numpy as np
-import torch
-from torch import nn
-from stable_baselines3 import PPO
-from stable_baselines3.common.vec_env import DummyVecEnv, VecMonitor
-from stable_baselines3.common.callbacks import BaseCallback
-from stable_baselines3.common.logger import configure as sb3_configure_logger
-
-# Env vars before any TF usage (defensive)
-os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-os.environ.setdefault("KMP_WARNINGS", "0")
 
 warnings.filterwarnings(
     "ignore",
@@ -50,10 +38,6 @@ warnings.filterwarnings(
     category=UserWarning,
     module="stable_baselines3.common.vec_env.patch_gym",
 )
-
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
 
 from rl_ppo.config import Config
 from rl_ppo.env.env import PortfolioEnv

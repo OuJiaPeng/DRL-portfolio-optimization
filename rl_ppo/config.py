@@ -72,8 +72,7 @@ class Config:
     # Entropy anneal (start high for exploration, decay to low)
     ENT_COEF_INITIAL: float = 0.02
     ENT_COEF_FINAL: float = 0.002
-    ENT_COEF_ANNEAL_STEPS: int = 80_000
-    ENT_COEF: float = 0.02
+    ENT_COEF_ANNEAL_STEPS: int = 80_000  # ENT_COEF (static) removed; always annealed
     GAE_LAMBDA: float = 0.95
     MAX_GRAD_NORM: float = 0.5
     VF_COEF: float = 0.5
@@ -84,8 +83,7 @@ class Config:
     TARGET_KL_INITIAL: float = 0.20
     TARGET_KL_FINAL: float = 0.05
     TARGET_KL_ANNEAL_STEPS: int = 100_000
-    TARGET_KL_DELAY_STEPS: int = 40_000
-    TARGET_KL: float | None = None
+    TARGET_KL_DELAY_STEPS: int = 40_000  # dynamic KL scheduling; no static TARGET_KL constant
     USE_SDE: bool = True
     SDE_SAMPLE_FREQ: int = 4
 
@@ -100,12 +98,12 @@ class Config:
     # TARGET_HHI: float = 0.18
     # HHI_BAND: float = 0.06
 
-    DIVERSITY_BONUS_ALPHA: float = 0.0
+    # Legacy diversity linear bonus removed (kept zero for backward compat previously)
     INITIAL_LOGIT_CLIP: float = 4.0
     FINAL_LOGIT_CLIP: float = 3.0
     LOGIT_CLIP_ANNEAL_STEPS: int = 60_000
     LOGIT_CLIP: float = 4.0
-    LOGIT_L2_PENALTY: float = 0.0
+    # Removed inactive penalties (logit L2, ENH) to reduce surface area.
     # Debug action logging (disabled for final release)
     DEBUG_LOG_ACTIONS: bool = False
     DEBUG_LOG_LIMIT: int = 0
@@ -127,7 +125,7 @@ class Config:
     # Effective number of holdings (ENH) penalty to discourage ultra concentrated block allocations
     # ENH = 1 / HHI 
     MIN_ENH: float = 4.0
-    ENH_PENALTY_COEF: float = 0.0
+    # ENH_PENALTY_COEF removed (was 0.0) – two-sided band handles concentration.
 
     # New two-sided diversification scheme (anti-uniform + anti-overconcentration)
     DIVERSITY_SCHEME: str = "two_sided_band"  # options: none, linear, two_sided_band

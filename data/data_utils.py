@@ -196,6 +196,7 @@ def create_features(
 
     feat = pd.concat(frames, axis=1); feat.columns = col_names
     feat = feat.dropna().copy()
+    assert feat.shape[1] == len(col_names), f"Feature column mismatch: names={len(col_names)} vs data={feat.shape[1]}"
     prices_aligned = prices.loc[feat.index].copy()
     return feat, prices_aligned
 

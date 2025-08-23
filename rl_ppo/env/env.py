@@ -47,11 +47,7 @@ class PortfolioEnv(gym.Env):
         self._rew_hist: list[float] = []
         self._asset_bias: np.ndarray | None = None
 
-        # Debug attributes (inactive)
-        self.debug = False
-        self.debug_limit = 0
-        self.debug_path = ''
-        self._debug_rows = 0
+    # (Former debug attributes removed for final cleanup)
 
     def _get_config_value(self, attr_name: str, default=None):
         """Get config value with override support for refit parameters."""
