@@ -1,5 +1,5 @@
 ## DRL Portfolio Optimization
-This project explores DRL (Deep Reinforcement Learning) based portfolio optimization with comparison to classical baselines.
+This project explores Deep Reinforcement Learning (DRL) based portfolio optimization with comparison to classical baselines.
 
 Through many interviews and continuous refinement, I think I have reached a final product.
 
@@ -8,7 +8,7 @@ More details can be found in the **"UPDATED_project_slides.pdf"**
 ---
 
 ## Data & Test Window
-Test window: 2025-01-02 to 2025-07-01 (6 months of out-of-sample trading days).  
+Test window: 2025-01-01 to 2025-07-01 (6 months of out-of-sample trading days).  
 Universe (10 ETFs; equities, intl, small-cap, EM, bonds, real assets, commodities): `SPY, QQQ, IWM, EFA, EEM, VNQ, TLT, IEF, GLD, USO`.
 
 ## Method Summary
