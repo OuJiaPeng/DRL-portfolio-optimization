@@ -1,7 +1,7 @@
 ## DRL Portfolio Optimization
 This project explores Deep Reinforcement Learning (DRL) based portfolio optimization with comparison to classical baselines.
 
-Through many interviews and continuous refinement, I think I have reached a final product.
+We use an RL agent to directly manage asset allocation, comparing to rolling and stationary Markowitz, as well as naive.
 
 More details can be found in the **"UPDATED_project_slides.pdf"**
 
