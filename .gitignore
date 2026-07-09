@@ -6,6 +6,12 @@
 !Makefile
 !project_slides.pdf
 
+# Local assistant/editor state and prep notes
+.claude/
+.cursor/
+INTERVIEW_NOTES.md
+LOCAL_NOTES.md
+
 !/analysis/
 !/analysis/**
 

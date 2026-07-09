@@ -1,117 +1,77 @@
 # DRL Portfolio Optimization
 
-> PPO-based portfolio allocator for 10 ETFs with a 274-dimensional state space, achieving **Sharpe 2.00** vs 1.75 rolling Markowitz on 2025 H1 out-of-sample data.
+An applied PPO portfolio allocator for 10 liquid ETFs.
 
-Allocation decisions from this module determine the positions that an execution layer
-then trades efficiently — see [RL-Optimal-Liquidation](https://github.com/OuJiaPeng/RL-Optimal-Liquidation)
-for the downstream execution agent.
+The agent sees recent returns, technical features, realized volatility, correlation, calendar features, and
+its previous weights. It outputs a long-only allocation. The test period is 2025 H1.
 
----
+This is an empirical project, not a theorem. The useful result is that the RL policy produced a smoother,
+lower-volatility portfolio than rolling Markowitz on the held-out window, which lifted Sharpe despite lower
+raw return.
 
 ## Results
 
 | Portfolio | Sharpe | Ann. Excess Return | Volatility | Max Drawdown | CAGR |
-|-----------|-------:|-------------------:|-----------:|-------------:|-----:|
-| **RL (PPO)** | **2.00** | 24.63 % | 12.31 % | −6.35 % | 32.13 % |
-| Markowitz | 1.75 | 31.68 % | 18.06 % | −5.80 % | 40.56 % |
-| Naive (Equal Wt) | 0.82 | 12.67 % | 15.44 % | −12.05 % | 16.48 % |
-| SPY (Buy & Hold) | 0.06 | 1.49 % | 26.48 % | −19.00 % | 0.78 % |
+|---|---:|---:|---:|---:|---:|
+| **RL (PPO)** | **2.00** | 24.63% | 12.31% | -6.35% | 32.13% |
+| Rolling Markowitz | 1.75 | 31.68% | 18.06% | -5.80% | 40.56% |
+| Equal weight | 0.82 | 12.67% | 15.44% | -12.05% | 16.48% |
+| SPY buy-and-hold | 0.06 | 1.49% | 26.48% | -19.00% | 0.78% |
 
 ![Overlayed wealth curves on 2025 H1 OOS](analysis/visuals/overlay_wealth_curves_with_spy.png)
 
-**Key take-aways**
+## What Happened
 
-1. **Risk efficiency** — RL has 22 % lower excess return but 32 % lower volatility than Markowitz, lifting the Sharpe ratio from 1.75 → 2.00.
-2. **Adaptive concentration** — the agent concentrates when signal quality is high, otherwise diversifies; unlike equal-weight or Markowitz, which can overfit means / covariances.
-3. **Monte Carlo tail positioning** (1 M sims) — Markowitz Sharpe 1.75 ≈ top 0.3 %; RL Sharpe 2.00 ≈ top 0.01 % of simulated random-allocation paths.
+The RL policy took less volatility than Markowitz. It gave up some excess return, but the volatility reduction
+was larger, so Sharpe improved from **1.75** to **2.00**.
 
----
+The policy also changed concentration over time. It concentrated when the signal looked cleaner and diversified
+when the feature state looked weaker. That behavior is useful because rolling mean-variance optimization can
+lean too hard on noisy means and covariances.
 
-## Methodology
+Monte Carlo random-allocation checks put the Markowitz Sharpe near the top **0.3%** of simulated paths and the
+RL Sharpe near the top **0.01%**. Treat that as context, not proof of a permanent edge.
 
-### Agent
+## Setup
+
+- **Universe:** `SPY QQQ IWM EFA EEM VNQ TLT IEF GLD USO`
+- **Train:** 2019-01-01 to 2024-05-31
+- **Validation:** 2024-06-01 to 2024-12-31
+- **Test:** 2025-01-02 to 2025-07-01
+- **Data:** Polygon.io daily OHLCV plus technical indicators
+
+## Model
 
 | Component | Detail |
-|-----------|--------|
-| Algorithm | PPO (Stable-Baselines3) with state-dependent exploration (`gSDE`) |
-| State | 274-dim: 10-day stacked normalised log returns, multi-horizon returns, RSI-14, realised vol, downside semi-vol, cross-sectional ranks, mean correlation, cyclical time encodings, previous portfolio weights |
-| Action | Continuous logits $\in \mathbb{R}^{10}$, softmax-normalised to portfolio weights |
-| Reward | Excess return − turnover cost + movement bonus − variance penalty ± HHI band shaping + advantage tilt, with rolling std normalisation |
-| Refit | Monthly fine-tune on most recent 90-day rolling window during test period |
+|---|---|
+| Algorithm | PPO with Stable-Baselines3 and state-dependent exploration |
+| State | 274 features: return windows, indicators, realized vol, downside vol, ranks, correlation, time features, previous weights |
+| Action | Continuous logits mapped through softmax into portfolio weights |
+| Reward | Excess return minus turnover cost and risk penalties |
+| Refit | Monthly fine-tune on the most recent 90-day window during test |
 
-### Baselines
+## Baselines
 
-| Baseline | Description |
-|----------|-------------|
-| **Rolling Markowitz** | Mean-variance optimisation with 6-month rolling window, daily rebalanced |
-| **Naive Equal Weight** | Static 10 % per ETF, no rebalancing |
+- **Rolling Markowitz:** mean-variance optimization with a 6-month rolling window.
+- **Equal weight:** static 10% per ETF.
+- **SPY:** buy-and-hold market proxy.
 
----
+## Repo Map
 
-## Data & Universe
-
-- **Universe** (10 ETFs): `SPY QQQ IWM EFA EEM VNQ TLT IEF GLD USO`
-- **Train**: 2019-01-01 → 2024-05-31
-- **Validation**: 2024-06-01 → 2024-12-31
-- **Test (OOS)**: 2025-01-02 → 2025-07-01
-- **Source**: Polygon.io daily OHLCV + technical indicators (RSI, MACD, EMA, Bollinger Bands)
-
----
-
-## Repository Structure
-
+```text
+data/          data loading and feature engineering
+rl_ppo/        PPO environment, policy, training, evaluation
+markowitz/     rolling Markowitz baseline
+naive/         equal-weight baseline
+analysis/      plots, Monte Carlo checks, feature analysis
 ```
-├── data/                   # Data loading & feature engineering
-│   ├── data_utils.py       #   Feature pipeline (274-dim state construction)
-│   ├── load_full_data.py   #   Polygon.io API fetcher
-│   └── load_prices.py      #   Lightweight price loader
-├── rl_ppo/                 # PPO agent
-│   ├── config.py           #   All hyperparameters
-│   ├── refit_config.py     #   Monthly-refit overrides
-│   ├── train_rl.py         #   Training entry point
-│   ├── eval_rl_refit.py    #   Evaluation with monthly refit
-│   ├── env/
-│   │   ├── env.py          #     Gymnasium environment
-│   │   └── policy.py       #     Custom MLP policy
-│   └── outputs/            #   Models, metrics & result CSVs
-├── markowitz/              # Rolling Markowitz baseline (notebook)
-│   └── outputs/            #   Metrics, weights & wealth CSVs
-├── naive/                  # Equal-weight baseline (notebook)
-│   └── outputs/            #   Metrics & plots
-├── analysis/               # Monte Carlo simulation & visualisations
-│   ├── monte_carlo/
-│   ├── visuals/
-│   └── feature_analysis/
-├── Makefile
-├── requirements.txt
-└── README.md
-```
-
----
 
 ## Quickstart
 
 ```bash
-# 1. Clone & install
-git clone https://github.com/OuJiaPeng/RL-Portfolio-Optimization.git
-cd RL-Portfolio-Optimization
 pip install -r requirements.txt
-
-# 2. Train the PPO agent
 make train
-
-# 3. Evaluate with monthly refit on the test period
 make eval
 ```
 
-### Configuration
-
-All hyperparameters live in [`rl_ppo/config.py`](rl_ppo/config.py).  
-Refit-specific overrides (learning rate, position limits, turnover cost) are in [`rl_ppo/refit_config.py`](rl_ppo/refit_config.py).
-
----
-
-## License
-
-MIT
-
+Hyperparameters live in `rl_ppo/config.py`. Monthly-refit overrides live in `rl_ppo/refit_config.py`.
